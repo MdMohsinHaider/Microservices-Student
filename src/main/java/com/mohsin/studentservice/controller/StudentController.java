@@ -1,7 +1,6 @@
 package com.mohsin.studentservice.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mohsin.studentservice.dto.response.StudentSubjectResponse;
 import com.mohsin.studentservice.entitiy.Student;
 import com.mohsin.studentservice.service.StudentService;
 
@@ -28,7 +28,7 @@ public class StudentController {
 	}
 	
 	@GetMapping(value = "/id/{id}")
-	public Optional<Student> getStudentById(@PathVariable long id) {
+	public StudentSubjectResponse getStudentById(@PathVariable long id) {
 		return service.getStudentById(id);
 	}
 	

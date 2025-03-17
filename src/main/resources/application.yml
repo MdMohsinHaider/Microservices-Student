@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: studentservice
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/microservices-student
+    username: root
+    password: Devil#Root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+server:
+  port: 8081
