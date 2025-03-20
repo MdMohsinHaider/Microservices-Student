@@ -1,12 +1,11 @@
 package com.mohsin.studentservice.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
+import com.mohsin.studentservice.client.StudentSubjectClient;
 import com.mohsin.studentservice.dto.Subject;
 import com.mohsin.studentservice.dto.response.StudentSubjectResponse;
 import com.mohsin.studentservice.entitiy.Student;
@@ -18,8 +17,11 @@ public class StudentService {
 	@Autowired
 	private StudentReposetory reposetory;
 	
+//	@Autowired
+//	private RestTemplate restTemplate;
+	
 	@Autowired
-	private RestTemplate restTemplate;
+	private StudentSubjectClient client;
 	
 	public Student saveStudent(Student student) {
 		return reposetory.save(student);
@@ -31,16 +33,22 @@ public class StudentService {
 		// find Student id from Student which is get
 		int subjectId = student.getSubjectid();
 		
-		// get subject by Subject id throw Subject End Point or API
-		ResponseEntity<Subject> subject = restTemplate.getForEntity("http://localhost:8082/api/subject/id/"+subjectId, Subject.class);
-		if (restTemplate ==null) {
-			throw new IllegalStateException("RestTemplate is not initialized properly");			
-		}
-		Subject subject2 = subject.getBody();
-		System.out.println(subject2);
-		
+//		// get subject by Subject id throw Subject End Point or API
+//		ResponseEntity<Subject> subject = restTemplate.getForEntity("http://localhost:8082/api/subject/id/"+subjectId, Subject.class);
+//		if (restTemplate ==null) {
+//			throw new IllegalStateException("RestTemplate is not initialized properly");			
+//		}
+//		Subject subject2 = subject.getBody();
+//		System.out.println(subject2);
 		// return student with Student and subject
-		return StudentSubjectResponse.builder().student(student).subject(subject2).build();
+		
+		
+		
+		// open feign spring cloud
+		Optional<Subject> subject = client.findSubjectByIdController(subjectId);
+		if (!subject.isPresent()) return null;
+		Subject subject1 = subject.get();
+		return StudentSubjectResponse.builder().student(student).subject(subject1).build();
 		
 	}
 	
